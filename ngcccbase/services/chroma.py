@@ -22,7 +22,7 @@ class ChromaBlockchainState(BlockchainStateBase):
 
     tx_lookup = {}
 
-    def __init__(self, url_stem="http://localhost:28832", testnet=False):
+    def __init__(self, url_stem="http://127.0.0.1:28832", testnet=False):
         """Initialization takes the url and port of the chroma server.
         We have to use the chroma server for everything that we would
         use 

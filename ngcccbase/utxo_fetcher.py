@@ -15,8 +15,8 @@ import Queue
 import threading
 import logging
 
-DEFAULT_ELECTRUM_SERVER = "btc.it-zone.org"
-DEFAULT_ELECTRUM_PORT = 50001
+DEFAULT_ELECTRUM_SERVER = "myr.electr.us"
+DEFAULT_ELECTRUM_PORT = 50009
 
 class BaseUTXOFetcher(object):
     def __init__(self, interface):
@@ -24,7 +24,7 @@ class BaseUTXOFetcher(object):
 
     @classmethod
     def make_interface(cls, model, params):
-        use = params.get('interface', 'helloblock')
+        use = params.get('interface', 'blockchain.info')
         if model.testnet:
             if use != 'helloblock':
                 use = 'abe_testnet'

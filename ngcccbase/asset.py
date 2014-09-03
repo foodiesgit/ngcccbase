@@ -220,14 +220,14 @@ class AssetDefinitionManager(object):
                 AssetDefinition(self.colormap, ad_params))
 
         # add bitcoin as a definition
-        if "bitcoin" not in self.lookup_by_moniker:
+        if "myriadcoin" not in self.lookup_by_moniker:
             btcdef = AssetDefinition(
                 self.colormap, {
-                    "monikers": ["bitcoin"],
+                    "monikers": ["myriadcoin"],
                     "color_set": [""],
                     "unit": 100000000,
                     })
-            self.lookup_by_moniker["bitcoin"] = btcdef
+            self.lookup_by_moniker["myriadcoin"] = btcdef
             self.asset_definitions.append(btcdef)
             self.update_config()
 
@@ -296,7 +296,7 @@ class AssetDefinitionManager(object):
         throw an exception.
         """
         if color_address.find('@') == -1:
-            return (self.lookup_by_moniker.get('bitcoin'), color_address)
+            return (self.lookup_by_moniker.get('myriad'), color_address)
         color_set_hash, address = color_address.split('@')
         asset = self.get_asset_by_id(color_set_hash)
         if asset:

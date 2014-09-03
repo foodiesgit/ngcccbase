@@ -245,8 +245,8 @@ class Chunk(ErrorThrowingRequestProcessor):
         self.require(data, 'index', "Chunk requires index")
         index = data.get('index')
         with open(HEADERS_FILE, 'rb') as headers:
-            headers.seek(index*2016*80)
-            return headers.read(2016*80)
+            headers.seek(index*1*80)
+            return headers.read(1*80)
 
 
 class Merkle(ErrorThrowingRequestProcessor):

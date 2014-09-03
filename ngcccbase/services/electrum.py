@@ -202,7 +202,7 @@ class EnhancedBlockchainState(blockchain.BlockchainState):
         class, BlockchainStatus, uses get_raw_transaction to get
         the height, which would cause a circular dependency.
         """
-        url = "http://blockchain.info/rawtx/%s" % txhash
+        url = "http://cryptap.us/myr/explorer/rawtx/%s" % txhash
         jsonData = urllib2.urlopen(url).read()
         if jsonData[0] != '{':
             return (None, False)  # pragma: no cover

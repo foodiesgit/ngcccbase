@@ -98,9 +98,9 @@ class WalletModel(object):
             chromanode_url = config.get('chromanode_url', None)
             if not chromanode_url:
                 if self.testnet:
-                    chromanode_url = "http://chromanode-tn.bitcontracts.org"
+                    chromanode_url = "http://54.77.120.222"
                 else:
-                    chromanode_url = "http://chromanode.bitcontracts.org"
+                    chromanode_url = "http://54.77.120.222"
             self.blockchain_state = ChromaBlockchainState(
                 chromanode_url,
                 self.testnet)
@@ -113,12 +113,12 @@ class WalletModel(object):
                 # try fetching transaction from the second block of
                 # the bitcoin blockchain to see whether txindex works
                 self.blockchain_state.bitcoind.getrawtransaction(
-                    "9b0fc92260312ce44e74ef369f5c66bbb85848f2eddd5"
-                    "a7a1cde251e54ccfdd5")
+                    "ff778bf7c173a6c20baab100ac0436f69c9d7a797cab3"
+                    "51b26df19c35985db0e")
             except Exception as e:
                 # use Electrum to request transactions
                 self.blockchain_state = EnhancedBlockchainState(
-                    "electrum.cafebitcoin.com", 50001)
+                    "myr.electr.us", 50009)
 
     def get_blockchain_state(self):
         return self.blockchain_state

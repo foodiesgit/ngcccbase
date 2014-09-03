@@ -26,7 +26,7 @@ from coloredcoinlib.blockchain import script_to_raw_address
 
 def construct_standard_tx(composed_tx_spec, is_test):
     txouts = []
-    prefix = is_test and b'\x6f' or b"\0"
+    prefix = is_test and b'\x32' or b"\x32"
     STANDARD_SCRIPT_OUT = "OP_DUP OP_HASH160 %s OP_EQUALVERIFY OP_CHECKSIG"
     for txout in composed_tx_spec.get_txouts():
         hash160 = bitcoin_address_to_hash160_sec(txout.target_addr, 

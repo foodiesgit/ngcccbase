@@ -72,7 +72,7 @@ class FileStore(BaseStore):
 
     def save_chunk(self, index, chunk):
         with open(self.path, 'ab+') as store:
-            store.seek(index*2016*80)
+            store.seek(index*10*80)
             store.write(chunk)
 
     def save_chain(self, chain):
@@ -149,9 +149,9 @@ INSERT INTO blockchain_headers (
         import time
         print time.time()
         chunk = chunk.encode('hex')
-        for i in xrange(2016):
+        for i in xrange(10):
             header = self.header_from_raw(chunk[i*80:(i+1)*80])
-            header['block_height'] = index*2016 + i
+            header['block_height'] = index*10 + i
             self._save_header(header)
         print time.time()
 
@@ -217,11 +217,11 @@ class BlockHashingAlgorithm(object):
         if index == 0:
             return self.max_bits, self.max_target
 
-        first = self.store.read_header((index-1)*2016)
-        last = self.store.read_header(index*2016-1)
+        first = self.store.read_header((index-1)*10)
+        last = self.store.read_header(index*10-1)
         if last is None:
             for h in chain:
-                if h.get('block_height') == index*2016-1:
+                if h.get('block_height') == index*10-1:
                     last = h
 
         nActualTimespan = last.get('timestamp') - first.get('timestamp')
@@ -256,13 +256,13 @@ class BlockHashingAlgorithm(object):
         return new_bits, new_target
 
     def verify_chunk(self, index, chunk):
-        height = index*2016
+        height = index*10
         num = len(chunk)/80
 
         if index == 0:  
             prev_hash = ("0"*64)
         else:
-            prev_header = self.store.read_header(index*2016-1)
+            prev_header = self.store.read_header(index*10-1)
             if prev_header is None:
                 raise
             prev_hash = self.hash_header(self.store.header_to_raw(prev_header))
@@ -293,7 +293,7 @@ class BlockHashingAlgorithm(object):
         prev_hash = self.hash_header(self.store.header_to_raw(prev_header))
 
         for header in chain:
-            bits, target = self.get_target(header.get('block_height')/2016, chain)
+            bits, target = self.get_target(header.get('block_height')/10, chain)
             _hash = self.hash_header(self.store.header_to_raw(header))
 
             assert prev_hash == header.get('prev_block_hash')
@@ -394,8 +394,8 @@ class VerifiedBlockchainState(BlockchainStateBase, threading.Thread):
         self.txdb.store.drop_from_height(height)
 
     def _get_chunks(self, header):
-        max_index = (header['block_height'] + 1)/2016
-        index = min((self.height+1)/2016, max_index)
+        max_index = (header['block_height'] + 1)/10
+        index = min((self.height+1)/10, max_index)
         reorg_from = None
 
         while self.is_running():
@@ -412,13 +412,13 @@ class VerifiedBlockchainState(BlockchainStateBase, threading.Thread):
                 if reorg_from is not None:
                     reorg_from = 0
             else:
-                prev_header = self.store.read_raw_header(index*2016-1)
+                prev_header = self.store.read_raw_header(index*10-1)
                 if prev_header is None:
                     return False
                 prev_hash = self.bha.hash_header(prev_header)
             chunk_first_header = self.store.header_from_raw(chunk[:80])
             if chunk_first_header['prev_block_hash'] != prev_hash:
-                reorg_from = index*2016
+                reorg_from = index*10
                 index -= 1
                 continue
 
@@ -433,7 +433,7 @@ class VerifiedBlockchainState(BlockchainStateBase, threading.Thread):
                 sys.stderr.flush()
                 return False
 
-            self.store.truncate(index*2016)
+            self.store.truncate(index*10)
             self.store.save_chunk(index, chunk)
             index += 1
 

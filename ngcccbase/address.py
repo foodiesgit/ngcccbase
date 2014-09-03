@@ -15,7 +15,7 @@ class AddressRecord(object):
     def __init__(self, **kwargs):
         self.color_set = kwargs.get('color_set')
         self.testnet = kwargs.get('testnet')
-        self.prefix = self.testnet and b'\x6f' or b"\0"
+        self.prefix = self.testnet and b'\x32' or b"\x32"
 
     def rawPubkey(self):
         return public_pair_to_hash160_sec(self.publicPoint.pair(), False)

@@ -49,7 +49,7 @@ class WebBlockchainInterface(object):
 class BlockchainInfoInterface(WebBlockchainInterface):
     """Interface for blockchain.info. DO NOT USE FOR TESTNET!
     """
-    URL_TEMPLATE = "https://blockchain.info/unspent?active=%s"
+    URL_TEMPLATE = "http://cryptap.us/myr/explorer/unspent?active=%s"
     REVERSE_TXHASH = True
 
     def __init__(self, tx_db=None):
@@ -60,11 +60,11 @@ class BlockchainInfoInterface(WebBlockchainInterface):
             self.tx_db.notify_confirmations(txhash, confirmations)
 
     def get_block_count(self):
-        return int(urllib2.urlopen("https://blockchain.info/q/getblockcount").read())
+        return int(urllib2.urlopen("http://cryptap.us/myr/explorer/q/getblockcount").read())
     
     def get_tx_confirmations(self, txhash):
         try:
-            url = "https://blockchain.info/rawtx/%s" % txhash
+            url = "http://cryptap.us/myr/explorer/rawtx/%s" % txhash
             data = json.loads(urllib2.urlopen(url).read())
             if 'block_height' in data:
                 block_count = self.get_block_count()
@@ -77,7 +77,7 @@ class BlockchainInfoInterface(WebBlockchainInterface):
 
     def get_address_history(self, address):
         block_count = self.get_block_count()
-        url = "https://blockchain.info/rawaddr/%s" % address
+        url = "http://cryptap.us/myr/explorer/rawaddr/%s" % address
         jsonData = urllib2.urlopen(url).read()
         data = json.loads(jsonData)
         return [tx['hash'] for tx in data['txs']]        

@@ -116,10 +116,10 @@ class BlockchainState(BlockchainStateBase):
     def from_url(cls, url, testnet=False):
         if testnet:
             bitcoind = bitcoin.rpc.RawProxy(
-                service_url=url, service_port=18332)
+                service_url=url, service_port=10889)
         else:
             bitcoind = bitcoin.rpc.RawProxy(  # pragma: no cover
-                service_url=url)              # pragma: no cover
+                service_url=url, service_port=10889)              # pragma: no cover
         return cls(bitcoind)
 
     def get_block_height(self, blockhash):
